@@ -80,6 +80,7 @@ def main():
     if cam_name != "":
         blend_cams = list_cameras()
         if cam_name in [cam.name for cam in blend_cams]:
+            print("New camera %s found and set!" % cam_name)
             set_cam(cam_name)
         else:
             print("Camera %s not found, using default cam from file" % cam_name)
