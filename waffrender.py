@@ -75,7 +75,7 @@ def main():
     args = parser.parse_args(argv)
 
     if args.list_accel:
-        for dev in list_devices()
+        for dev in list_devices():
             print( dev['name'] )
     
     #if we want accel:
