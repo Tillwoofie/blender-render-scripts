@@ -35,7 +35,7 @@ def enable_devices(try_nvidia):
             if 'NVIDIA' in device['name']:
                 enable_device(device)
                 nvidia_dev_found = True
-            elif 'TESLA' in device['name']:
+            elif 'Tesla' in device['name']:
                 enable_device(device)
                 nvidia_dev_found = True
     
