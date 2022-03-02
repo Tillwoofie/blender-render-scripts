@@ -85,8 +85,8 @@ def main():
             print("Optix Enabled!")
        if not optix_on:
            cuda_on = set_comp_device('CUDA')
-       if cuda_on:
-            print("CUDA Enabled!")
+           if cuda_on:
+               print("CUDA Enabled!")
        # if neither, we got no special devices.
        if optix_on or cuda_on:
            enable_devices(True)
