@@ -81,8 +81,12 @@ def main():
     #if we want accel:
     if not args.no_accel:
        optix_on = set_comp_device('OPTIX')
+       if optix_on:
+            print("Optix Enabled!")
        if not optix_on:
            cuda_on = set_comp_device('CUDA')
+       if cuda_on:
+            print("CUDA Enabled!")
        # if neither, we got no special devices.
        if optix_on or cuda_on:
            enable_devices(True)
