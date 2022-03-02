@@ -12,6 +12,17 @@ def set_comp_device(device_type):
         return False
     return True
 
+def list_devices():
+    waffcycles = bpy.context.preferences.addons['cycles']
+    waffcycles.preferences.get_devices()
+    return waffcycles.preferences.devices
+
+def enable_device(device):
+    waffcycles = bpy.context.preferences.addons['cycles']
+    waffcycles.preferences.get_devices()
+    print(device['name'])
+    device['use'] = 1
+    print(' - Enabled!')
 
 def enable_devices(try_nvidia):
     waffcycles = bpy.context.preferences.addons['cycles']
@@ -22,9 +33,10 @@ def enable_devices(try_nvidia):
     if try_nvidia:
         for device in waffcycles.preferences.devices:
             if 'NVIDIA' in device['name']:
-                print(device['name'])
-                device['use'] = 1
-                print(" - Enabled!")
+                enable_device(device)
+                nvidia_dev_found = True
+            elif 'TESLA' in device['name']:
+                enable_device(device)
                 nvidia_dev_found = True
     
     # no nvidia devices found
@@ -58,9 +70,14 @@ def main():
 
     parser.add_argument('-c', '--cam', action="store", type=str, default="", dest='cam_new_name')
     parser.add_argument('-n', '--no-accel', action='store_true', default=False, dest='no_accel')
+    parser.add_argument('-l', '--list', action='store_true', default=False, dest='list_accel')
 
     args = parser.parse_args(argv)
 
+    if args.list_accel:
+        for dev in list_devices()
+            print( dev['name'] )
+    
     #if we want accel:
     if not args.no_accel:
        optix_on = set_comp_device('OPTIX')
