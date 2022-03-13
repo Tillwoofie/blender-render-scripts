@@ -24,14 +24,14 @@ def enable_device(device):
     device['use'] = 1
     print(' - Enabled!')
 
-def enable_devices(try_nvidia):
+def enable_devices(try_nvidia, device_type):
     waffcycles = bpy.context.preferences.addons['cycles']
     waffcycles.preferences.get_devices()
     # find and maybe filter devices for optix/cuda
     nvidia_dev_found = False
 
     if try_nvidia:
-        for device in waffcycles.preferences.devices:
+        for device in waffcycles.preferences.get_devices_for_type(device_type):
             if 'NVIDIA' in device['name']:
                 enable_device(device)
                 nvidia_dev_found = True
@@ -39,6 +39,9 @@ def enable_devices(try_nvidia):
                 enable_device(device)
                 nvidia_dev_found = True
     
+    if nvidia_dev_found:
+        bpy.context.scene.cycles.device = "GPU"
+
     # no nvidia devices found
     if not try_nvidia or not nvidia_dev_found:
         print("")
@@ -81,6 +84,7 @@ def main():
     #if we want accel:
     if not args.no_accel:
        optix_on = set_comp_device('OPTIX')
+       #optix_on = False
        if optix_on:
             print("Optix Enabled!")
        if not optix_on:
@@ -88,8 +92,10 @@ def main():
            if cuda_on:
                print("CUDA Enabled!")
        # if neither, we got no special devices.
-       if optix_on or cuda_on:
-           enable_devices(True)
+       if optix_on:
+           enable_devices(True, "OPTIX")
+       elif cuda_on:
+           enable_devices(True, "CUDA")
        else:
            enable_devices(False)
     else:
